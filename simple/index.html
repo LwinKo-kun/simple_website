@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Organization Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Organization Dashboard</h1>
+  <button id="themeToggle">Toggle Theme</button>
+</header>
+
+<main>
+  <!-- Search and Sort -->
+  <section class="controls">
+    <input type="text" id="search" placeholder="Search organizations...">
+    <select id="sort">
+      <option value="">Sort By</option>
+      <option value="name">Name</option>
+      <option value="employees">Employees</option>
+      <option value="location">Location</option>
+    </select>
+  </section>
+
+  <!-- Organizations -->
+  <section id="content">
+    <p>Loading organizations...</p>
+  </section>
+
+  <!-- Contact Form -->
+  <section class="contact-section">
+    <h2>Contact Us (Demo)</h2>
+    <input type="text" id="contactName" placeholder="Your Name"><br>
+    <input type="email" id="contactEmail" placeholder="Your Email"><br>
+    <textarea id="contactMessage" placeholder="Your Message"></textarea><br>
+    <button id="contactBtn">Send Message</button>
+  </section>
+
+  <!-- Chart -->
+  <section class="chart-section">
+    <h2>Employee Distribution</h2>
+    <canvas id="employeeChart"></canvas>
+  </section>
+</main>
+
+<footer>
+  © 2026 Demo Organization Dashboard
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
