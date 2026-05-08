@@ -3,61 +3,147 @@ const searchInput = document.getElementById("search");
 const sortSelect = document.getElementById("sort");
 const themeToggle = document.getElementById("themeToggle");
 
-let organizations = [];
+const btn = document.getElementById("addOrgBtn");
 
-// Fetch JSON data
+let organizations = [];
+let editId = null;
+let chart;
+
+// =====================
+// LOAD DATA
+// =====================
 async function loadOrganizations() {
   try {
     const response = await fetch("data/organization.json");
-    organizations = await response.json();
+    const data = await response.json();
+
+    const saved = JSON.parse(localStorage.getItem("orgs"));
+
+    organizations = saved && saved.length ? saved : data;
 
     updateDisplay();
     createChart();
-  } catch (error) {
-    content.innerHTML = "<p>Failed to load organizations.</p>";
-    console.error(error);
+
+  } catch (err) {
+    content.innerHTML = "<p>Failed to load data</p>";
+    console.error(err);
   }
 }
 
-// Render organizations
+// =====================
+// RENDER
+// =====================
 function renderOrganizations(data) {
-  if (data.length === 0) {
-    content.innerHTML = "<p>No organizations found.</p>";
+
+  if (!data.length) {
+    content.innerHTML = "<p>No organizations found</p>";
     return;
   }
 
   content.innerHTML = data.map(org => `
     <div class="card">
       <h2>${org.name}</h2>
-
-      <div class="info-grid">
-        <p><strong>Founded:</strong> ${org.founded}</p>
-        <p><strong>Location:</strong> ${org.location}</p>
-        <p><strong>Employees:</strong> ${org.employees}</p>
-      </div>
-
+      <p><strong>Founded:</strong> ${org.founded}</p>
+      <p><strong>Location:</strong> ${org.location}</p>
+      <p><strong>Employees:</strong> ${org.employees}</p>
       <p>${org.description}</p>
 
-      <div class="departments">
-        <strong>Departments:</strong>
-
-        <ul>
-          ${org.departments.map(dep => `
-            <li>
-              ${dep.name}
-              <br>
-              Manager: ${dep.manager}
-              <br>
-              Employees: ${dep.employees}
-            </li>
-          `).join("")}
-        </ul>
+      <div class="card-actions">
+        <button onclick="editOrg(${org.id})">Edit</button>
+        <button onclick="deleteOrg(${org.id})">Delete</button>
       </div>
     </div>
   `).join("");
 }
 
-// Search and Sort
+// =====================
+// ADD / UPDATE
+// =====================
+btn.addEventListener("click", handleSubmit);
+
+function handleSubmit() {
+
+  const name = orgName.value.trim();
+  const founded = orgFounded.value;
+  const location = orgLocation.value.trim();
+  const employees = orgEmployees.value;
+  const description = orgDesc.value.trim();
+
+  if (!name || !founded || !location || !employees || !description) {
+    alert("Fill all fields");
+    return;
+  }
+
+  if (editId !== null) {
+
+    const org = organizations.find(o => o.id === editId);
+
+    org.name = name;
+    org.founded = Number(founded);
+    org.location = location;
+    org.employees = Number(employees);
+    org.description = description;
+
+    editId = null;
+    btn.textContent = "Add Organization";
+
+  } else {
+
+    organizations.push({
+      id: Date.now(),
+      name,
+      founded: Number(founded),
+      location,
+      employees: Number(employees),
+      description
+    });
+  }
+
+  saveData();
+  resetForm();
+}
+
+// =====================
+// EDIT
+// =====================
+function editOrg(id) {
+
+  const org = organizations.find(o => o.id === id);
+  editId = id;
+
+  orgName.value = org.name;
+  orgFounded.value = org.founded;
+  orgLocation.value = org.location;
+  orgEmployees.value = org.employees;
+  orgDesc.value = org.description;
+
+  btn.textContent = "Update Organization";
+}
+
+// =====================
+// DELETE
+// =====================
+function deleteOrg(id) {
+
+  if (!confirm("Delete this organization?")) return;
+
+  organizations = organizations.filter(o => o.id !== id);
+
+  saveData();
+}
+
+// =====================
+// SAVE
+// =====================
+function saveData() {
+  localStorage.setItem("orgs", JSON.stringify(organizations));
+  updateDisplay();
+  createChart();
+}
+
+// =====================
+// DISPLAY LOGIC
+// =====================
 function updateDisplay() {
 
   let filtered = organizations.filter(org =>
@@ -65,99 +151,98 @@ function updateDisplay() {
     org.location.toLowerCase().includes(searchInput.value.toLowerCase())
   );
 
-  const sortBy = sortSelect.value;
-
-  if (sortBy === "name") {
+  if (sortSelect.value === "name") {
     filtered.sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  if (sortBy === "employees") {
+  if (sortSelect.value === "employees") {
     filtered.sort((a, b) => b.employees - a.employees);
   }
 
-  if (sortBy === "location") {
-    filtered.sort((a, b) =>
-      a.location.localeCompare(b.location)
-    );
+  if (sortSelect.value === "location") {
+    filtered.sort((a, b) => a.location.localeCompare(b.location));
   }
 
   renderOrganizations(filtered);
 }
 
+// =====================
+// EVENTS
+// =====================
 searchInput.addEventListener("input", updateDisplay);
 sortSelect.addEventListener("change", updateDisplay);
 
-// Contact Form
-document.getElementById("contactBtn")
-.addEventListener("click", () => {
+// =====================
+// CONTACT FORM
+// =====================
+document.getElementById("contactBtn").addEventListener("click", () => {
 
-  const name = document.getElementById("contactName").value.trim();
-  const email = document.getElementById("contactEmail").value.trim();
-  const message = document.getElementById("contactMessage").value.trim();
+  const name = contactName.value.trim();
+  const email = contactEmail.value.trim();
+  const message = contactMessage.value.trim();
 
   if (!name || !email || !message) {
-    alert("All fields are required!");
+    alert("Fill all fields");
     return;
   }
 
-  const messages =
-    JSON.parse(localStorage.getItem("messages")) || [];
+  const messages = JSON.parse(localStorage.getItem("messages")) || [];
 
-  messages.push({
-    name,
-    email,
-    message,
-    date: new Date().toLocaleString()
-  });
+  messages.push({ name, email, message, date: new Date().toLocaleString() });
 
-  localStorage.setItem(
-    "messages",
-    JSON.stringify(messages)
-  );
+  localStorage.setItem("messages", JSON.stringify(messages));
 
-  alert("Message saved successfully!");
+  alert("Message saved");
 
-  document.getElementById("contactName").value = "";
-  document.getElementById("contactEmail").value = "";
-  document.getElementById("contactMessage").value = "";
+  contactName.value = "";
+  contactEmail.value = "";
+  contactMessage.value = "";
 });
 
-// Chart
-let chart;
-
+// =====================
+// CHART
+// =====================
 function createChart() {
 
-  const ctx = document
-    .getElementById("employeeChart");
+  const ctx = document.getElementById("employeeChart");
 
-  if (chart) {
-    chart.destroy();
-  }
+  if (chart) chart.destroy();
 
   chart = new Chart(ctx, {
     type: "bar",
-
     data: {
-      labels: organizations.map(org => org.name),
-
+      labels: organizations.map(o => o.name),
       datasets: [{
         label: "Employees",
-        data: organizations.map(org => org.employees)
+        data: organizations.map(o => o.employees)
       }]
     },
-
     options: {
       responsive: true,
-
       maintainAspectRatio: false
     }
   });
 }
 
-// Dark mode
+// =====================
+// THEME TOGGLE
+// =====================
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
 });
 
-// Load data
+// =====================
+// RESET FORM
+// =====================
+function resetForm() {
+  orgName.value = "";
+  orgFounded.value = "";
+  orgLocation.value = "";
+  orgEmployees.value = "";
+  orgDesc.value = "";
+}
+
+// =====================
+// INIT
+// =====================
 loadOrganizations();

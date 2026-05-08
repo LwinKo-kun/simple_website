@@ -5,19 +5,7 @@
     "founded": 2018,
     "location": "Singapore",
     "employees": 125,
-    "description": "Tech company specializing in smart inventory systems.",
-    "departments": [
-      {
-        "name": "Engineering",
-        "manager": "Alice",
-        "employees": 50
-      },
-      {
-        "name": "Product",
-        "manager": "Bob",
-        "employees": 30
-      }
-    ]
+    "description": "Tech company specializing in smart inventory systems."
   },
   {
     "id": 2,
@@ -25,19 +13,7 @@
     "founded": 2015,
     "location": "Malaysia",
     "employees": 98,
-    "description": "Environmental solutions company.",
-    "departments": [
-      {
-        "name": "Operations",
-        "manager": "Carol",
-        "employees": 40
-      },
-      {
-        "name": "Sales",
-        "manager": "David",
-        "employees": 25
-      }
-    ]
+    "description": "Environmental solutions company."
   },
   {
     "id": 3,
@@ -45,18 +21,6 @@
     "founded": 2020,
     "location": "Indonesia",
     "employees": 60,
-    "description": "Manufacturing and logistics solutions.",
-    "departments": [
-      {
-        "name": "Support",
-        "manager": "Eva",
-        "employees": 15
-      },
-      {
-        "name": "Logistics",
-        "manager": "Frank",
-        "employees": 20
-      }
-    ]
+    "description": "Manufacturing and logistics solutions."
   }
 ]
