@@ -8,7 +8,7 @@ let organizations = [];
 // Fetch JSON data
 async function loadOrganizations() {
   try {
-    const response = await fetch("data/organizations.json");
+    const response = await fetch("data/organization.json");
     organizations = await response.json();
 
     updateDisplay();
