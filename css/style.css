@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  transition: 0.3s;
+}
+
+body.dark {
+  background: #121212;
+  color: #eee;
+}
+
+header {
+  background: #0d6efd;
+  color: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 15px 20px;
+
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+header h1 {
+  font-size: 1.5rem;
+}
+
+button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+
+  background: #0056b3;
+  color: white;
+
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+main {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: auto;
+  padding: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls input,
+.controls select {
+  flex: 1;
+
+  padding: 10px;
+
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#content {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(300px, 1fr));
+
+  gap: 20px;
+}
+
+.card {
+  background: white;
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.1);
+
+  transition: 0.3s;
+}
+
+body.dark .card,
+body.dark .contact-section,
+body.dark .chart-section {
+  background: #1f1f1f;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  color: #0d6efd;
+}
+
+.info-grid {
+  display: grid;
+  gap: 8px;
+
+  margin-bottom: 15px;
+}
+
+.departments ul {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.contact-section,
+.chart-section {
+  background: white;
+
+  margin-top: 30px;
+  padding: 20px;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.1);
+}
+
+input,
+textarea {
+  width: 100%;
+
+  padding: 10px;
+
+  margin-top: 10px;
+
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.chart-section {
+  height: 400px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+
+  .controls {
+    flex-direction: column;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chart-section {
+    height: 300px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
