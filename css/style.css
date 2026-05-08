@@ -1,6 +1,3 @@
-/* =====================
-   THEME VARIABLES
-===================== */
 :root {
   --bg: #FFFBF2;
   --surface: #ffffff;
@@ -8,6 +5,9 @@
   --primary: #780115;
   --accent: #780115;
   --border: #ddd;
+
+  --radius: 10px;
+  --shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 body.dark {
@@ -19,9 +19,9 @@ body.dark {
   --border: #3a0a14;
 }
 
-/* =====================
-   BASE
-===================== */
+/* ======================
+   BASE ACCESSIBILITY
+====================== */
 * {
   margin: 0;
   padding: 0;
@@ -32,13 +32,18 @@ body {
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: 0.3s;
+  line-height: 1.5;
+  font-size: 16px;
 }
 
-/* =====================
-   HEADER
-===================== */
+/* ======================
+   HEADER (MOBILE SAFE)
+====================== */
 header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
   background: var(--primary);
   color: var(--bg);
 
@@ -46,144 +51,153 @@ header {
   justify-content: space-between;
   align-items: center;
 
-  padding: 15px 20px;
+  padding: 14px 16px;
 }
 
-/* =====================
-   BUTTONS
-===================== */
+/* ======================
+   BUTTONS (TOUCH FRIENDLY)
+====================== */
 button {
+  min-height: 44px; /* important accessibility rule */
+  padding: 10px 14px;
+
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  border-radius: var(--radius);
+
   cursor: pointer;
 
   background: var(--surface);
   color: var(--text);
-  transition: 0.3s;
+
+  font-size: 14px;
+
+  transition: 0.2s;
 }
 
-button:hover {
-  opacity: 0.9;
+button:active {
+  transform: scale(0.97);
 }
 
-/* =====================
-   INPUTS
-===================== */
+/* ======================
+   INPUTS (MOBILE FRIENDLY)
+====================== */
 input,
 textarea,
 select {
   width: 100%;
-  padding: 10px;
+  min-height: 44px;
 
+  padding: 10px;
   margin-top: 10px;
 
-  border-radius: 6px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
 
   background: var(--surface);
   color: var(--text);
+
+  font-size: 16px; /* prevents zoom on iOS */
 }
 
-/* =====================
-   MAIN LAYOUT
-===================== */
+/* ======================
+   LAYOUT
+====================== */
 main {
   max-width: 1200px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
 }
 
-/* =====================
-   CONTROLS
-===================== */
+/* ======================
+   CONTROLS (STACK ON MOBILE)
+====================== */
 .controls {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-/* =====================
-   GRID CARDS
-===================== */
+/* ======================
+   CARD GRID (RESPONSIVE)
+====================== */
 #content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
 }
 
-/* =====================
+/* ======================
    CARD
-===================== */
+====================== */
 .card {
   background: var(--surface);
   color: var(--text);
 
-  padding: 20px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: var(--radius);
 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
 
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
+  word-break: break-word;
 }
 
 .card h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
   color: var(--accent);
 }
 
-/* =====================
+/* ======================
    CARD ACTIONS
-===================== */
+====================== */
 .card-actions {
-  margin-top: 10px;
+  margin-top: 12px;
   display: flex;
   gap: 10px;
 }
 
 .card-actions button {
+  flex: 1;
   background: var(--accent);
   color: var(--bg);
 }
 
-/* =====================
+/* ======================
    SECTIONS
-===================== */
+====================== */
 .add-org,
 .contact-section,
 .chart-section {
   background: var(--surface);
-  padding: 20px;
-  margin-top: 20px;
+  padding: 16px;
+  margin-top: 16px;
 
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-/* =====================
-   CHART
-===================== */
+/* ======================
+   CHART HEIGHT MOBILE FIX
+====================== */
 .chart-section {
-  height: 400px;
+  height: 300px;
 }
 
-/* =====================
+/* ======================
    FOOTER
-===================== */
+====================== */
 footer {
   text-align: center;
   padding: 20px;
-  color: var(--text);
+  font-size: 14px;
   opacity: 0.7;
 }
 
-/* =====================
-   RESPONSIVE
-===================== */
+/* ======================
+   TABLET
+====================== */
 @media (max-width: 768px) {
+
   .controls {
     flex-direction: column;
   }
@@ -191,15 +205,32 @@ footer {
   header {
     flex-direction: column;
     gap: 10px;
+    text-align: center;
   }
 
-  .chart-section {
-    height: 300px;
+  .card-actions {
+    flex-direction: column;
   }
 }
 
+/* ======================
+   MOBILE SMALL
+====================== */
 @media (max-width: 480px) {
+
+  body {
+    font-size: 15px;
+  }
+
+  header h1 {
+    font-size: 18px;
+  }
+
   button {
     width: 100%;
+  }
+
+  .chart-section {
+    height: 250px;
   }
 }
