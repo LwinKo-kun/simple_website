@@ -1,27 +1,55 @@
-:root {
-  --bg: #FFFBF2;
-  --surface: #ffffff;
-  --text: #780115;
-  --primary: #780115;
-  --accent: #780115;
-  --border: #ddd;
+/* ==========================================================================
+   COLOR SYSTEM & CSS VARIABLES
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  --radius: 10px;
-  --shadow: 0 4px 10px rgba(0,0,0,0.08);
+:root {
+  /* Font Family */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Color Palette - Light Mode */
+  --bg: rgb(163, 213, 176);
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --accent: #4f46e5;
+  --border: #e2e8f0;
+
+  /* Geometry & Shadows */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
 }
 
 body.dark {
-  --bg: #1A0004;
-  --surface: #780115;
-  --text: #f7b638;
-  --primary: #f7b638;
-  --accent: #f7b638;
-  --border: #3a0a14;
+  /* Color Palette - Dark Mode */
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface-hover: #334155;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --primary: #818cf8;
+  --primary-hover: #6366f1;
+  --primary-light: rgba(129, 140, 248, 0.15);
+  --accent: #818cf8;
+  --border: #334155;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
 }
 
-/* ======================
-   BASE ACCESSIBILITY
-====================== */
+/* ==========================================================================
+   BASE RESET
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
@@ -29,208 +57,362 @@ body.dark {
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: var(--bg);
+  font-family: var(--font-sans);
+  background-color: var(--bg);
   color: var(--text);
-  line-height: 1.5;
-  font-size: 16px;
+  line-height: 1.6;
+  font-size: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ======================
-   HEADER (MOBILE SAFE)
-====================== */
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
 header {
   position: sticky;
   top: 0;
   z-index: 100;
 
-  background: var(--primary);
-  color: var(--bg);
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 14px 16px;
+  padding: 16px 32px;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
-/* ======================
-   BUTTONS (TOUCH FRIENDLY)
-====================== */
-button {
-  min-height: 44px; /* important accessibility rule */
-  padding: 10px 14px;
+body.dark header {
+  background-color: rgba(30, 41, 59, 0.85);
+}
 
-  border: none;
-  border-radius: var(--radius);
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+button {
+  min-height: 42px;
+  padding: 10px 18px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 
   cursor: pointer;
 
-  background: var(--surface);
+  background-color: var(--surface);
   color: var(--text);
 
+  font-family: var(--font-sans);
   font-size: 14px;
+  font-weight: 600;
 
-  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  background-color: var(--surface-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
 }
 
 button:active {
-  transform: scale(0.97);
+  transform: translateY(0) scale(0.98);
 }
 
-/* ======================
-   INPUTS (MOBILE FRIENDLY)
-====================== */
+/* Main Form Buttons */
+.add-org button,
+.contact-section button {
+  width: 100%;
+  margin-top: 8px;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.add-org button:hover,
+.contact-section button:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+/* ==========================================================================
+   FORM INPUTS & SELECTS
+   ========================================================================== */
 input,
 textarea,
 select {
   width: 100%;
-  min-height: 44px;
+  min-height: 42px;
 
-  padding: 10px;
+  padding: 10px 14px;
   margin-top: 10px;
 
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
 
-  background: var(--surface);
+  background-color: var(--bg);
   color: var(--text);
 
-  font-size: 16px; /* prevents zoom on iOS */
+  font-family: var(--font-sans);
+  font-size: 14px;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ======================
-   LAYOUT
-====================== */
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background-color: var(--surface);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Custom Select Dropdown Styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* ==========================================================================
+   LAYOUT & CONTAINER
+   ========================================================================== */
 main {
   max-width: 1200px;
-  margin: auto;
-  padding: 16px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 24px;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* ======================
-   CONTROLS (STACK ON MOBILE)
-====================== */
+/* ==========================================================================
+   CONTROLS (SEARCH & SORT BAR)
+   ========================================================================== */
 .controls {
   display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 14px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ======================
-   CARD GRID (RESPONSIVE)
-====================== */
+.controls input {
+  margin-top: 0;
+  flex: 1;
+}
+
+.controls select {
+  margin-top: 0;
+  width: 220px;
+}
+
+/* ==========================================================================
+   ORGANIZATIONS CARDS GRID
+   ========================================================================== */
 #content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
 }
 
-/* ======================
-   CARD
-====================== */
 .card {
   background: var(--surface);
   color: var(--text);
 
-  padding: 16px;
+  padding: 24px;
   border-radius: var(--radius);
+  border: 1px solid var(--border);
 
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 
-  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border);
 }
 
 .card h2 {
-  font-size: 18px;
+  font-size: 1.15rem;
+  font-weight: 700;
   margin-bottom: 8px;
   color: var(--accent);
 }
 
-/* ======================
-   CARD ACTIONS
-====================== */
+.card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+/* Card Actions */
 .card-actions {
-  margin-top: 12px;
+  margin-top: 18px;
   display: flex;
   gap: 10px;
 }
 
 .card-actions button {
   flex: 1;
-  background: var(--accent);
-  color: var(--bg);
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid transparent;
 }
 
-/* ======================
-   SECTIONS
-====================== */
+.card-actions button:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Loading / Empty Message State */
+#content > p {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   FORM SECTIONS & CARDS
+   ========================================================================== */
 .add-org,
 .contact-section,
 .chart-section {
   background: var(--surface);
-  padding: 16px;
-  margin-top: 16px;
+  padding: 24px;
+  margin-top: 0;
 
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ======================
-   CHART HEIGHT MOBILE FIX
-====================== */
+.add-org h2,
+.contact-section h2,
+.chart-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   CHART SECTION
+   ========================================================================== */
 .chart-section {
-  height: 300px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ======================
+.chart-section canvas {
+  flex: 1;
+  max-height: 300px;
+}
+
+/* ==========================================================================
    FOOTER
-====================== */
+   ========================================================================== */
 footer {
   text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  opacity: 0.7;
+  padding: 24px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: auto;
 }
 
-/* ======================
-   TABLET
-====================== */
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 @media (max-width: 768px) {
+  header {
+    padding: 14px 20px;
+  }
 
   .controls {
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .controls select {
+    width: 100%;
+  }
+
+  .chart-section {
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 16px;
   }
 
   header {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     text-align: center;
+  }
+
+  header button {
+    width: 100%;
   }
 
   .card-actions {
     flex-direction: column;
   }
-}
-
-/* ======================
-   MOBILE SMALL
-====================== */
-@media (max-width: 480px) {
-
-  body {
-    font-size: 15px;
-  }
-
-  header h1 {
-    font-size: 18px;
-  }
-
-  button {
-    width: 100%;
-  }
 
   .chart-section {
-    height: 250px;
+    height: 280px;
   }
 }
